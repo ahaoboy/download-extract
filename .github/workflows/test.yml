@@ -17,13 +17,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - url: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip
+          - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-apple-darwin.full.zip
             os: macos-13
-          - url: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip
+          - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-aarch64-apple-darwin.full.zip
             os: macos-14
-          - url: https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip
+          - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-unknown-linux-gnu.full.tgz
             os: windows-latest
-          - url: https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-baseline.zip
+          - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-baseline.zip
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-pc-windows-.full.zip
             os: ubuntu-24.04
     runs-on: ${{ matrix.os }}
     name: bench-${{ matrix.os }}
@@ -37,7 +41,11 @@ jobs:
       - name: install
         run: |
           cargo run
-      - name: run
+      - name: binstall
         run: |
-          cargo run -- ${{ matrix.url }} bun
+          cargo run -- ${{ matrix.binstall }} binstall
+          ls -lh binstall
+      - name: bun
+        run: |
+          cargo run -- ${{ matrix.bun }} bun
           ls -lh bun
