@@ -25,10 +25,10 @@ jobs:
             binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-aarch64-apple-darwin.full.zip
             os: macos-14
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip
-            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-unknown-linux-gnu.full.tgz
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-pc-windows-msvc.full.zip
             os: windows-latest
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-baseline.zip
-            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-pc-windows-.full.zip
+            binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-unknown-linux-gnu.full.tgz
             os: ubuntu-24.04
     runs-on: ${{ matrix.os }}
     name: bench-${{ matrix.os }}
