@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-binstalk-downloader = "^0.13"
+binstalk-downloader = { version = "^0.13", features = ["zlib-ng"] }
 tokio = { version = "^1.43", features = [
   "rt",
   "sync",
