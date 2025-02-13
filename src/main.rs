@@ -35,6 +35,7 @@ async fn main() {
     let mut args = std::env::args();
     args.next();
     if let (Some(url), Some(dir)) = (args.next(), args.next()) {
+        println!("{url} {dir}");
         let client = create_client().await;
         let files = Download::new(client, Url::parse(&url).unwrap());
         let fmt = PkgFmt::guess_pkg_format(&url).unwrap();
