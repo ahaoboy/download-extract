@@ -32,7 +32,9 @@ pub async fn create_client() -> Client {
 
 #[tokio::main]
 async fn main() {
-    if let (Some(url), Some(dir)) = (std::env::args().next(), std::env::args().next()) {
+    let mut args = std::env::args();
+    args.next();
+    if let (Some(url), Some(dir)) = (args.next(), args.next()) {
         let client = create_client().await;
         let files = Download::new(client, Url::parse(&url).unwrap());
         let fmt = PkgFmt::guess_pkg_format(&url).unwrap();
