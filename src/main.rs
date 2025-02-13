@@ -52,10 +52,9 @@ async fn main() {
             .and_extract(fmt, &tmp_dir)
             .await
             .expect("failed to extract");
-        atomic_install(&tmp_dir, std::path::Path::new(&dir)).expect("failed to atomic_install");
-
-        std::fs::create_dir_all(&dir).expect("failed to create_dir_all");
-        std::fs::rename(&tmp_dir, &dir).expect("failed to rename");
+        let dst = std::path::Path::new(&dir);
+        std::fs::create_dir_all(&dst).expect("failed to create_dir_all");
+        atomic_install(&tmp_dir, &dst).expect("failed to atomic_install");
     } else {
         println!("download-extract <url> <dir>");
     }
