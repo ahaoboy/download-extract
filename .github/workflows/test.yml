@@ -39,6 +39,17 @@ jobs:
         with:
           toolchain: nightly
           override: true
+
+      - name: install easy-archive
+        uses: ahaoboy/easy-setup@v1
+        with:
+          url: https://github.com/ahaoboy/easy-archive
+      - name: easy-archive
+        run: |
+          curl -L ${{ matrix.binstall }} -o binstall.zip
+          easy-archive binstall.zip
+          curl -L ${{ matrix.bun }} -o bun.zip
+          easy-archive bun.zip
       - name: install
         run: |
           cargo run
