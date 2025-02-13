@@ -1,0 +1,39 @@
+name: Test
+
+permissions:
+  contents: write
+
+on: [push]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+defaults:
+  run:
+    shell: bash --noprofile --norc -CeEuo pipefail {0}
+
+jobs:
+  bench:
+      strategy:
+        matrix:
+          include:
+            - url: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip
+              os: macos-13
+            - url: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip
+              os: macos-14
+            - url: https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip
+              os: windows-14
+            - url: https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-baseline.zip
+              os: ubuntu-24.04
+      runs-on: ${{ matrix.os }}
+      name: bench-${{ matrix.os }}
+      steps:
+        - uses: actions/checkout@v4
+        - name: Install latest nightly
+          uses: actions-rs/toolchain@v1
+          with:
+            toolchain: nightly
+            override: true
+        - name: install
+          run: |
+            cargo run -- ${{ matrix.url }} bun
+            ls -lh bun
