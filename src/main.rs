@@ -53,7 +53,9 @@ async fn main() {
             .await
             .expect("failed to extract");
         atomic_install(&tmp_dir, std::path::Path::new(&dir)).expect("failed to atomic_install");
-        std::fs::rename(&tmp_dir, dir).expect("failed to rename");
+
+        std::fs::create_dir_all(&dir).expect("failed to create_dir_all");
+        std::fs::rename(&tmp_dir, &dir).expect("failed to rename");
     } else {
         println!("download-extract <url> <dir>");
     }
