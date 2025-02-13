@@ -20,16 +20,24 @@ jobs:
         include:
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip
             binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-apple-darwin.full.zip
+            bunName: bun.zip
+            binstallName: binstall.zip
             os: macos-13
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-aarch64.zip
             binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-aarch64-apple-darwin.full.zip
             os: macos-14
+            bunName: bun.zip
+            binstallName: binstall.zip
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-windows-x64.zip
             binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-pc-windows-msvc.full.zip
             os: windows-latest
+            bunName: bun.zip
+            binstallName: binstall.zip
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64-baseline.zip
             binstall: https://github.com/cargo-bins/cargo-binstall/releases/download/v1.10.23/cargo-binstall-x86_64-unknown-linux-gnu.full.tgz
             os: ubuntu-24.04
+            bunName: bun.zip
+            binstallName: binstall.tgz
     runs-on: ${{ matrix.os }}
     name: bench-${{ matrix.os }}
     steps:
@@ -46,10 +54,10 @@ jobs:
           url: https://github.com/ahaoboy/easy-archive
       - name: easy-archive
         run: |
-          curl -L ${{ matrix.binstall }} -o binstall.zip
-          easy-archive binstall.zip
-          curl -L ${{ matrix.bun }} -o bun.zip
-          easy-archive bun.zip
+          curl -L ${{ matrix.binstall }} -o ${{ matrix.binstallName }}
+          easy-archive ${{ matrix.binstallName }}
+          curl -L ${{ matrix.bun }} -o ${{ matrix.bunName }}
+          easy-archive ${{ matrix.bunName }}
       - name: install
         run: |
           cargo run
