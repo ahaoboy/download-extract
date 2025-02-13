@@ -15,6 +15,7 @@ defaults:
 jobs:
   bench:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - bun: https://github.com/oven-sh/bun/releases/latest/download/bun-darwin-x64.zip
