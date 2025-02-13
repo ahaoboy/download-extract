@@ -1,3 +1,4 @@
+use atomic_file_install::atomic_install;
 use binstalk_downloader::{
     download::{Download, PkgFmt},
     remote::{
@@ -51,6 +52,7 @@ async fn main() {
             .and_extract(fmt, &tmp_dir)
             .await
             .expect("failed to extract");
+        atomic_install(&tmp_dir, std::path::Path::new(&dir)).expect("failed to atomic_install");
         std::fs::rename(&tmp_dir, dir).expect("failed to rename");
     } else {
         println!("download-extract <url> <dir>");
