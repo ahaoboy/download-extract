@@ -1,4 +1,3 @@
-use atomic_file_install::atomic_install;
 use binstalk_downloader::{
     download::{Download, PkgFmt},
     remote::{
@@ -7,7 +6,7 @@ use binstalk_downloader::{
     },
 };
 use reqwest::{ClientBuilder, Url};
-use std::{num::NonZeroU16, time::UNIX_EPOCH};
+use std::num::NonZeroU16;
 
 fn get_headers() -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -38,23 +37,13 @@ async fn main() {
     if let (Some(url), Some(dir)) = (args.next(), args.next()) {
         println!("{url} {dir}");
         let client = create_client().await;
-        let files = Download::new(client, Url::parse(&url).unwrap());
+        let download = Download::new(client, Url::parse(&url).unwrap());
         let fmt = PkgFmt::guess_pkg_format(&url).unwrap();
-        let mut tmp_dir = std::env::temp_dir();
-        let start = std::time::SystemTime::now();
-        let since_epoch = start
-            .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
-        let timestamp = since_epoch.as_secs().to_string();
-        tmp_dir.push(timestamp);
-        std::fs::create_dir_all(&tmp_dir).expect("failed to create_dir_all");
-        files
-            .and_extract(fmt, &tmp_dir)
+        std::fs::create_dir_all(&dir).expect("failed to create_dir_all");
+        download
+            .and_extract(fmt, &dir)
             .await
             .expect("failed to extract");
-        let dst = std::path::Path::new(&dir);
-        std::fs::create_dir_all(&dst).expect("failed to create_dir_all");
-        atomic_install(&tmp_dir, &dst).expect("failed to atomic_install");
     } else {
         println!("download-extract <url> <dir>");
     }
